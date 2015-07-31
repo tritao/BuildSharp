@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D36435CD-BF1C-771A-2824-507614FB110B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BuildSharp</RootNamespace>
+    <AssemblyName>BuildSharp</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build\vs2013\lib\Debug_x32\</OutputPath>
+    <BaseIntermediateOutputPath>..\..\build\vs2013\obj\x32\Debug\BuildSharp\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build\vs2013\lib\Debug_x64\</OutputPath>
+    <BaseIntermediateOutputPath>..\..\build\vs2013\obj\x64\Debug\BuildSharp\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build\vs2013\lib\Release_x32\</OutputPath>
+    <BaseIntermediateOutputPath>..\..\build\vs2013\obj\x32\Release\BuildSharp\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build\vs2013\lib\Release_x64\</OutputPath>
+    <BaseIntermediateOutputPath>..\..\build\vs2013\obj\x64\Release\BuildSharp\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BuildSteps\GitBuildStep.cs" />
+    <Compile Include="BuildSteps\LuaBuildStep.cs" />
+    <Compile Include="Builds\Build.cs" />
+    <Compile Include="Builds\BuildAgent.cs" />
+    <Compile Include="Builds\BuildConfiguration.cs" />
+    <Compile Include="Builds\BuildOutput.cs" />
+    <Compile Include="Builds\BuildQueue.cs" />
+    <Compile Include="Builds\BuildSet.cs" />
+    <Compile Include="Builds\BuildStep.cs" />
+    <Compile Include="ConsoleUtils.cs" />
+    <Compile Include="Diagnostics.cs" />
+    <Compile Include="Driver.cs" />
+    <Compile Include="Networking\NetworkClient.cs" />
+    <Compile Include="Networking\NetworkMessage.cs" />
+    <Compile Include="Networking\NetworkServer.cs" />
+    <Compile Include="Options.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="Toolsets\MSVCToolchain.cs" />
+    <Compile Include="Toolsets\Toolchains.cs" />
+    <Compile Include="Utils\BlockGenerator.cs" />
+    <Compile Include="Utils\Options.cs" />
+    <Compile Include="Utils\ProcessOutput.cs" />
+    <Compile Include="Utils\TextGenerator.cs" />
+    <Compile Include="Utils\Utils.cs" />
+    <Compile Include="VersionControl\Branch.cs" />
+    <Compile Include="VersionControl\Commit.cs" />
+    <Compile Include="VersionControl\GithubPoller.cs" />
+    <Compile Include="VersionControl\GithubRepository.cs" />
+    <Compile Include="VersionControl\GithubWebhook.cs" />
+    <Compile Include="VersionControl\Repository.cs" />
+    <Compile Include="Web\Http.cs" />
+    <Compile Include="..\..\deps\fastJSON\AssemblyInfo.cs">
+      <Link>deps\fastJSON\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\deps\fastJSON\Formatter.cs">
+      <Link>deps\fastJSON\Formatter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\deps\fastJSON\Getters.cs">
+      <Link>deps\fastJSON\Getters.cs</Link>
+    </Compile>
+    <Compile Include="..\..\deps\fastJSON\JSON.cs">
+      <Link>deps\fastJSON\JSON.cs</Link>
+    </Compile>
+    <Compile Include="..\..\deps\fastJSON\JsonParser.cs">
+      <Link>deps\fastJSON\JsonParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\deps\fastJSON\JsonSerializer.cs">
+      <Link>deps\fastJSON\JsonSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\deps\fastJSON\Reflection.cs">
+      <Link>deps\fastJSON\Reflection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\deps\fastJSON\SafeDictionary.cs">
+      <Link>deps\fastJSON\SafeDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\deps\fastJSON\dynamic.cs">
+      <Link>deps\fastJSON\dynamic.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\deps\octokit.net\Octokit\Octokit.csproj">
+      <Project>{08DD4305-7787-4823-A53F-4D0F725A07F3}</Project>
+      <Name>Octokit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\deps\Eluant\Eluant.csproj">
+      <Project>{2E22B7B0-1AC4-E186-037F-F5DAEFBF68D7}</Project>
+      <Name>Eluant</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

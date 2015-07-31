@@ -1,0 +1,24 @@
+[submodule "deps/libgit2sharp"]
+	path = deps/libgit2sharp
+	url = https://github.com/libgit2/libgit2sharp
+[submodule "deps/octokit.net"]
+	path = deps/octokit.net
+	url = https://github.com/octokit/octokit.net
+[submodule "deps/KeraLua"]
+	path = deps/KeraLua
+	url = https://github.com/NLua/KeraLua.git
+[submodule "deps/NLua"]
+	path = deps/NLua
+	url = https://github.com/NLua/NLua.git
+[submodule "deps/DynamicLua"]
+	path = deps/DynamicLua
+	url = https://github.com/nrother/dynamiclua.git
+[submodule "deps/Eluant"]
+	path = deps/Eluant
+	url = https://github.com/cdhowie/Eluant.git
+[submodule "deps/openssl"]
+	path = deps/openssl
+	url = https://github.com/openssl/openssl.git
+[submodule "deps/libssh2"]
+	path = deps/libssh2
+	url = git://git.libssh2.org/libssh2.git
