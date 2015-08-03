@@ -22,10 +22,6 @@
 [submodule "deps/libssh2"]
 	path = deps/libssh2
 	url = git://git.libssh2.org/libssh2.git
-[submodule "deps/lua"]
-	path = deps/lua
-	url = https://github.com/LuaDist/lua.git
-	branch = lua-5.1
 [submodule "deps/sqlite-net"]
 	path = deps/sqlite-net
 	url = https://github.com/praeclarum/sqlite-net
