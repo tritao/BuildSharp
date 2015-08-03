@@ -1,11 +1,28 @@
-    external "Octokit"
-      location (depsdir .. "/octokit.net/Octokit")
-      uuid "08DD4305-7787-4823-A53F-4D0F725A07F3"
-      language "C#"
-      kind "SharedLib"
+project "Octokit"
+  --SetupManagedProject()
+  language "C#"
+  kind "SharedLib"
 
-    external "Octokit.Tests"
-      location (depsdir .. "/octokit.net/Octokit.Tests")
-      uuid "149448D4-C2F2-4DF9-86BD-03E3272F093B"
-      language "C#"
-      kind "SharedLib"
+  defines
+  {
+    "SIMPLE_JSON_OBJARRAYINTERNAL",
+    "SIMPLE_JSON_INTERNAL",
+    "SIMPLE_JSON_READONLY_COLLECTIONS",
+    "NET_45"
+  }
+
+  files
+  {
+    depsdir .. "/octokit.net/Octokit/**.cs",
+    depsdir .. "/octokit.net/SolutionInfo.cs" 
+  }
+
+  links
+  {
+    "Microsoft.CSharp",
+    "System",
+    "System.Core",
+    "System.Net",
+    "System.Net.Http",
+    "System.Runtime.Serialization"
+  }

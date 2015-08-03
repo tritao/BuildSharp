@@ -17,7 +17,7 @@ solution "BuildSharp"
   libdirs { libdir }
   debugdir (bindir)
 
-  startproject "BuildSharp"
+  startproject "BuildSharp.BuildServer"
   
   configuration "vs2012"
     framework "4.5"
@@ -32,6 +32,4 @@ solution "BuildSharp"
 
     dofile "Lua.lua"
     dofile "Eluant.lua"
-    --dofile "NLua.lua"  
-    --dofile "LibGit2.lua"
     dofile "Octokit.lua"
