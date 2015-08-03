@@ -25,3 +25,7 @@
 [submodule "deps/sqlite-net"]
 	path = deps/sqlite-net
 	url = https://github.com/praeclarum/sqlite-net
+[submodule "deps/lua"]
+	path = deps/lua
+	url = https://github.com/lua/lua.git
+	branch = 5.1.x
