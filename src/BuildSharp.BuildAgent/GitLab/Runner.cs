@@ -115,7 +115,7 @@ namespace BuildSharp.GitLab
                 var conf = new BuildConfiguration();
 
                 // Create Build Job
-                build = new Build(conf) {Info = buildInfo};
+                build = new Build() {Info = buildInfo};
                 Console.WriteLine("[" + DateTime.Now + "] Build " + buildInfo.Value.id
                     + " started...");
 

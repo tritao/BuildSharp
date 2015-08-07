@@ -11,8 +11,8 @@ namespace BuildSharp.Steps
     /// </summary>
     public class GitBuildStep : BuildStep
     {
-        public GitBuildStep(BuildAgent agent, Build build)
-            : base(agent, build)
+        public GitBuildStep(BuildExecutor executor, Build build)
+            : base(executor, build)
         {
         }
 

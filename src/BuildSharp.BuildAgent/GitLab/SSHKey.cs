@@ -48,7 +48,7 @@ namespace BuildSharp.GitLab
                 StartInfo =
                 {
                     FileName = "ssh-keygen",
-                    Arguments = "-t rsa -f " + profile + @"\.ssh\id_rsa -N """
+                    Arguments = "-t rsa -f " + profile + @"\.ssh\id_rsa -N "
                 }
             };
             p.Start();

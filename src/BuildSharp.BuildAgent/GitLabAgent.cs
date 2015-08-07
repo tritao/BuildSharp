@@ -6,7 +6,7 @@ namespace BuildSharp.Agent
     /// <summary>
     /// Represents a GitLab build agent.
     /// </summary>
-    public class GitLabAgent : Driver
+    public class GitLabAgent
     {
         static void Main(string[] args)
         {

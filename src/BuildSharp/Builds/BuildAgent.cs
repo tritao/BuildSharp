@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using BuildSharp.Networking;
 using BuildSharp.Steps;
 
 namespace BuildSharp.Builds
@@ -32,9 +31,9 @@ namespace BuildSharp.Builds
     /// <summary>
     /// Represents a remote build agent.
     /// </summary>
-    public class BuildAgent
+    public class BuildExecutor
     {
-        public BuildAgent()
+        public BuildExecutor()
         {
             PendingBuilds = new List<Build>();
         }

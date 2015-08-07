@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using BuildSharp.Builds;
+using BuildSharp.VersionControl;
 
-namespace BuildSharp.VersionControl
+namespace BuildSharp
 {
     /// <summary>
     /// Represents a project in the build system.

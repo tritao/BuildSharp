@@ -43,52 +43,50 @@ namespace BuildSharp.Networking
                 ClientDisconnected(this);
         }
 
-        public async Task Process()
+        public async Task<NetworkMessage> GetMessage()
         {
-            while (IsActive)
+            try
             {
-                try
+                if (!_networkStream.CanRead)
                 {
-                    if (!_networkStream.CanRead)
-                    {
-                        Disconnect();
-                        return;
-                    }
+                    Disconnect();
+                    return null;
+                }
 
-                    int size;
-                    using (var reader = new BinaryReader(_networkStream,
-                        Encoding.Default, leaveOpen: true))
-                        size = reader.ReadInt32();
+                var message = new NetworkMessage();
+
+                using (var reader = new BinaryReader(_networkStream,
+                    Encoding.Default, leaveOpen: true))
+                {
+                    var kind = (NetworkMessageKind) reader.ReadInt32();
 
                     // If content is null, that means the connection has been
                     // gracefully disconnected.
-                    if (size > 0 && !_networkStream.DataAvailable)
+                    if (kind == NetworkMessageKind.Disconnect)
                     {
                         Disconnect();
-                        return;
+                        return null;
                     }
 
+                    var size = reader.ReadInt32();
                     var buffer = new byte[size];
 
                     await _networkStream.ReadAsync(buffer, 0, size);
-                    var data = Encoding.UTF8.GetString(buffer);
-
-                    var message = new NetworkMessage
-                    {
-                        Data = data
-                    };
-
-                    if (MessageReceived != null)
-                        MessageReceived(this, message);
+                    message.Data = Encoding.UTF8.GetString(buffer);
                 }
 
-                // If the TCP connection is ungracefully disconnected, it will
-                // throw an exception.
-                catch (IOException)
-                {
-                    Disconnect();
-                    return;
-                }
+                if (MessageReceived != null)
+                    MessageReceived(this, message);
+
+                return message;
+            }
+
+            // If the TCP connection is ungracefully disconnected, it will
+            // throw an exception.
+            catch (IOException)
+            {
+                Disconnect();
+                return null;
             }
         }
 
@@ -105,6 +103,8 @@ namespace BuildSharp.Networking
                 using (var writer = new BinaryWriter(_networkStream,
                     Encoding.Default, leaveOpen: true))
                 {
+                    writer.Write((int)kind);
+
                     var buffer = Encoding.UTF8.GetBytes(data);
                     writer.Write(buffer.Length);
                     writer.Write(buffer);

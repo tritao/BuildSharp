@@ -8,14 +8,9 @@ namespace BuildSharp.Builds
     public abstract class BuildStep
     {
         /// <summary>
-        /// Reference to the driver.
+        /// Build executor associated with the build step.
         /// </summary>
-        public Driver Driver;
-
-        /// <summary>
-        /// Build agent associated with the build step.
-        /// </summary>
-        public BuildAgent BuildAgent { get; private set; }
+        public BuildExecutor BuildExecutor { get; private set; }
 
         /// <summary>
         /// Build associated with the build step.
@@ -37,15 +32,15 @@ namespace BuildSharp.Builds
 
         public Options Options;
 
-        protected BuildStep(BuildAgent agent, Build build)
+        protected BuildStep(BuildExecutor executor, Build build)
         {
-            if (agent == null)
-                throw new ArgumentNullException("agent");
+            if (executor == null)
+                throw new ArgumentNullException("executor");
 
             if (build == null)
                 throw new ArgumentNullException("build");
 
-            BuildAgent = agent;
+            BuildExecutor = executor;
             Build = build;
         }
 

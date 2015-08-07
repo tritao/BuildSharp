@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Net.Sockets;
 using BuildSharp.Networking;
 
 namespace BuildSharp.Agent
@@ -7,10 +7,15 @@ namespace BuildSharp.Agent
     /// <summary>
     /// Represents a build agent.
     /// </summary>
-    public class BuildAgent : Driver
+    public class BuildAgent
     {
+        public BuildAgent(Options options)
+        {
+            this.options = options;
+        }
+
+        private readonly Options options;
         private NetworkClient networkClient;
-        private Task networkClientTask;
 
         public void RunAgent()
         {
@@ -22,20 +27,40 @@ namespace BuildSharp.Agent
             }
 
             networkClient = new NetworkClient(socket);
-            networkClient.MessageReceived += AgentOnMessageReceived;
+            //networkClient.MessageReceived += AgentOnMessageReceived;
 
-            var agentInfo = new AgentInfoMessage
+            var agentInfo = new BuildAgentInfoMessage
             {
                 MachineName = Environment.MachineName
             };
-            networkClient.Send(agentInfo);
 
-            networkClientTask = networkClient.Process();
+            networkClient.Send(NetworkMessageKind.BuildAgentInfo, agentInfo);
+
+            while (networkClient.IsActive)
+            {
+                var task = networkClient.GetMessage();
+                task.Wait();
+
+                var message = task.Result;
+                OnServerMessage(networkClient, message);
+            }
         }
 
-        private void AgentOnMessageReceived(NetworkClient client, NetworkMessage message)
+        private void OnServerMessage(NetworkClient client, NetworkMessage message)
         {
             Log.Message("Received: {0}", message);
+
+            switch (message.Kind)
+            {
+                case NetworkMessageKind.Disconnect:
+                    break;
+                case NetworkMessageKind.ProtocolVersion:
+                    break;
+                case NetworkMessageKind.BuildAgentInfo:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private TcpClient ConnectToServer()
@@ -43,25 +68,37 @@ namespace BuildSharp.Agent
             const int numTries = 10;
             for (var i = 0; i < numTries; i++)
             {
-                Console.Write("Trying to connect to server... ");
+                Log.Message("Trying to connect to server... ");
 
                 TcpClient client;
                 try
                 {
                     client = new TcpClient();
-                    client.Connect(Options.ServerAddress, Options.ServerPort);
+                    client.Connect(options.ServerAddress, options.ServerPort);
                 }
                 catch (SocketException ex)
                 {
-                    Console.WriteLine("failed.");
+                    Log.Message("Connection failed.");
                     continue;
                 }
 
-                Console.WriteLine("OK.");
+                Log.Message("Connected.");
                 return client;
             }
 
             return null;
+        }
+
+        static void Main(string[] args)
+        {
+            var options = new Options
+            {
+                ServerAddress = string.Empty,
+                ServerPort = 0
+            };
+
+            var agent = new BuildAgent(options);
+            agent.RunAgent();
         }
     }
 }

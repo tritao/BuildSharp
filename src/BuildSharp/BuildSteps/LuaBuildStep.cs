@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using BuildSharp.Builds;
-using BuildSharp.Toolsets;
+using CppSharp;
 using Eluant;
 using ProcessReadWriteUtils;
 
@@ -49,8 +49,8 @@ namespace BuildSharp.Steps
         /// </summary>
         public List<CommandOutput> Outputs;
 
-        public LuaBuildStep(BuildAgent agent, Build build)
-            : base(agent, build)
+        public LuaBuildStep(BuildExecutor executor, Build build)
+            : base(executor, build)
         {
             luaRuntime = new LuaRuntime();
             Outputs = new List<CommandOutput>();
@@ -140,8 +140,8 @@ namespace BuildSharp.Steps
         [BindLua("netframeworkpath")]
         string NETFrameworkPath()
         {
-            string path;
-            MSVCToolchain.GetNetFrameworkDir(out path);
+            string path = string.Empty;
+            //MSVCToolchain.GetNetFrameworkSdks(out path);
 
             return path;
         }
@@ -149,8 +149,8 @@ namespace BuildSharp.Steps
         [BindLua("msbuildpath")]
         string MSBuildPath()
         {
-            string path;
-            MSVCToolchain.GetMSBuildSDKDir(out path);
+            string path = string.Empty;
+            //MSVCToolchain.GetMSBuildSDKDir(out path);
 
             return path;
         }

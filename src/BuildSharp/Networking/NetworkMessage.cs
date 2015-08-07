@@ -5,7 +5,8 @@ namespace BuildSharp.Networking
     public enum NetworkMessageKind
     {
         Disconnect,
-        JSON,
+        ProtocolVersion,
+        BuildAgentInfo,
     }
 
     public class NetworkMessage
@@ -16,14 +17,20 @@ namespace BuildSharp.Networking
 
     public static class NetworkMessageExtensions
     {
-        public static void Send<T>(this NetworkClient client, T @object)
+        public static void Send<T>(this NetworkClient client,
+            NetworkMessageKind kind, T @object)
         {
             var data = JSON.ToJSON(@object);
-            client.SendMessage(NetworkMessageKind.JSON, data);
+            client.SendMessage(kind, data);
         }
     }
 
-    public struct AgentInfoMessage
+    public struct ProtocolVersionMessage
+    {
+        public int Version;
+    }
+
+    public struct BuildAgentInfoMessage
     {
         public string MachineName { get; set; }
     }

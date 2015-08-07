@@ -52,7 +52,7 @@ namespace BuildSharp.Networking
 
             _clients.Add(netClient);
             _clientReceiveInputTasks.Add(
-                new KeyValuePair<Task, NetworkClient>(netClient.Process(), netClient));
+                new KeyValuePair<Task, NetworkClient>(netClient.GetMessage(), netClient));
         }
 
         private void OnClientDisconnected(NetworkClient client)

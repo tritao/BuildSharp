@@ -5,7 +5,7 @@ using SQLite;
 
 namespace BuildSharp.BuildServer.Database
 {
-    public class Build
+    public class DBBuild
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
@@ -18,7 +18,7 @@ namespace BuildSharp.BuildServer.Database
         public BuildState State { get; set; }
     }
 
-    public class Project
+    public class DBProject
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
@@ -46,13 +46,13 @@ namespace BuildSharp.BuildServer.Database
 
         public void CreateSchema()
         {
-            Sqlite.CreateTable<Build>();
-            Sqlite.CreateTable<Project>();
+            Sqlite.CreateTable<DBBuild>();
+            Sqlite.CreateTable<DBProject>();
         }
 
-        public void AddBuild(Builds.Build build)
+        public void AddBuild(Build build)
         {
-            var obj = new Build
+            var obj = new DBBuild
             {
                 Revision = build.Commit.Revision,
                 State = build.State
@@ -63,9 +63,9 @@ namespace BuildSharp.BuildServer.Database
             build.Id = obj.Id;
         }
 
-        public void AddProject(VersionControl.Project project)
+        public void AddProject(Project project)
         {
-            var obj = new Project
+            var obj = new DBProject
             {
                 Name = project.Name
             };
@@ -75,16 +75,16 @@ namespace BuildSharp.BuildServer.Database
             project.Id = obj.Id;
         }
 
-        public void LoadProjects(List<VersionControl.Project> projects)
+        public void LoadProjects(List<Project> projects)
         {
-            foreach (var obj in Sqlite.Table<Project>())
+            foreach (var obj in Sqlite.Table<DBProject>())
             {
             }
         }
 
         public void LoadBuilds()
         {
-            foreach (var obj in Sqlite.Table<Build>())
+            foreach (var obj in Sqlite.Table<DBBuild>())
             {
             }
         }

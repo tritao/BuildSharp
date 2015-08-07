@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
+using BuildSharp.Agent;
 using BuildSharp.Builds;
 using BuildSharp.BuildServer;
+using BuildSharp.BuildServer.Database;
 using BuildSharp.Networking;
 using BuildSharp.VersionControl;
-using Database = BuildSharp.BuildServer.Database.Database;
+using TaskExtensions = BuildSharp.BuildServer.TaskExtensions;
 
 namespace BuildSharp.Server
 {
@@ -30,7 +34,7 @@ namespace BuildSharp.Server
         /// <summary>
         /// List of connected build agents.
         /// </summary>
-        public List<BuildAgent> BuildAgents;
+        public List<RemoteBuildAgent> BuildAgents;
 
         /// <summary>
         /// Build queue with pending builds.
@@ -61,7 +65,7 @@ namespace BuildSharp.Server
         {
             Options = options;
             Projects = new List<Project>();
-            BuildAgents = new List<BuildAgent>();
+            BuildAgents = new List<RemoteBuildAgent>();
             BuildQueue = new BuildQueue();
             GithubPoller = new GithubPoller(Projects, Options.Username,
                 Options.Token);
@@ -115,13 +119,12 @@ namespace BuildSharp.Server
 
         private void HandleBuildAgentConnection(NetworkClient client)
         {
-            var agent = new BuildAgent();
+            var agent = new RemoteBuildAgent(client);
             lock (BuildAgents)
             {
                 BuildAgents.Add(agent);
             }
 
-            //agent.Client.MessageReceived += HandleBuildAgentMessage;
             Log.Message("Build agent connected: {0}", agent);
         }
 
@@ -129,20 +132,13 @@ namespace BuildSharp.Server
         {
             lock (BuildAgents)
             {
-                //foreach (var agent in BuildAgents.Where(
-                //    agent => agent.Client == client) .ToArray())
-                //{
-                //    BuildAgents.Remove(agent);
-                //    Log.Message("Build agent disconnected: {0}", agent);
-                //}
+                foreach (var agent in BuildAgents.Where(
+                    agent => agent.Client == client).ToArray())
+                {
+                    BuildAgents.Remove(agent);
+                    Log.Message("Build agent disconnected: {0}", agent);
+                }
             }
-        }
-
-        private void HandleBuildAgentMessage(NetworkClient client,
-            NetworkMessage message)
-        {
-            var data = message.Data;
-            Log.Message("Message: {0}", data);
         }
 
         public void CheckAgents()
@@ -174,10 +170,10 @@ namespace BuildSharp.Server
             BuildQueue.RemoveBuild(nextBuild);
 
             // Send the build to the agent.
-            agent.PendingBuilds.Add(nextBuild);
+            agent.SendBuild(nextBuild);
         }
 
-        BuildAgent GetCompatibleBuildAgent(Build build)
+        RemoteBuildAgent GetCompatibleBuildAgent(Build build)
         {
             foreach (var agent in BuildAgents)
             {
@@ -244,11 +240,11 @@ namespace BuildSharp.Server
             var options = new Options
             {
                 OutputDir = @"C:\builds\",
-                Username = "",
-                Token = ""
+                Username = "tritao",
+                Token = "a32086c82fb50fc7acc4b33a5d183e23d4efa997"
             };
 
-            var agent = new BuildAgent();
+            Task.Run((() => LaunchBuildAgent(options)));
 
             using (var server = new BuildServer(options))
             {
@@ -259,9 +255,14 @@ namespace BuildSharp.Server
                 });
 
                 server.Projects.Add(project);
-                server.BuildAgents.Add(agent);
                 server.RunServer();
             }
+        }
+
+        static void LaunchBuildAgent(Options options)
+        {
+            var agent = new BuildAgent(options);
+            agent.RunAgent();
         }
     }
 }
